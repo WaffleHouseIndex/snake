@@ -20,19 +20,18 @@ int main(int argc, char* argv[])
         3. If valid start game with parameters else end program
     */
 
-    int AMT_foodToWin; 
-    char* PATH_snakeFile;
+    int amountOfFoodToWin; 
+    char* filename;
    
     if (argc != ARG_COUNT) 
     {
-        printf("Usage: ./snek <row_map> <col_map> <len_snek>\n");
+        printf("Usage: ./snake <filename> <food_amount_to_win>\n");
     }
     else
     {
         /*Under the assumption of correct datatypes*/
-        AMT_foodToWin = atoi(argv[I_FOOD_]);
-        col_map = atoi(argv[I_COL_MAP]);
-        len_snek = atoi(argv[I_LEN_SNEK]);
+        amountOfFoodToWin = atoi(argv[I_FOOD_AMOUNT_TO_WIN]);
+        
 
         if(row_map>MIN_ROW_MAP)
         {

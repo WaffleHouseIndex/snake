@@ -1,6 +1,6 @@
 # Makefile Variables
 CC       = gcc
-EXEC    = snek
+EXEC    = snake
 CFLAGS = -Wall -Werror -ansi -pedantic -g
 OBJ      = main.o terminal.o random.o
 
