@@ -1,4 +1,5 @@
 #include "main.h"
+#include "game.h"
 #include "constants.h"
 
 #include <stdio.h>
@@ -22,6 +23,7 @@ int main(int argc, char* argv[])
 
     int amountOfFoodToWin; 
     char* filename;
+    S_GAME* snakeGame;
    
     if (argc != ARG_COUNT) 
     {
@@ -30,32 +32,18 @@ int main(int argc, char* argv[])
     else
     {
         /*Under the assumption of correct datatypes*/
+        filename = argv[I_SNAKE_FILENAME];
         amountOfFoodToWin = atoi(argv[I_FOOD_AMOUNT_TO_WIN]);
-        
-
-        if(row_map>MIN_ROW_MAP)
+        if(amountOfFoodToWin>ZERO)
         {
-            if(col_map>MIN_COL_MAP)
-            {
-                if(len_snek>=MIN_LEN_SNEK && len_snek<=col_map)
-                {
-                    /*Initalise Game*/
-                    runGame(row_map,col_map,len_snek);
-                }
-                else
-                {
-                    printf("Invalid parameter <len_snek>. Should be over 3 and not more than <col_map>\n");
-                }
-            }
-            else
-            {
-                printf("Invalid parameter <col_map>. Should be over 5.\n");
-            }
+            snakeGame = initGame(filename,amountOfFoodToWin);
+            runGame(snakeGame);
         }
         else
         {
-            printf("Invalid parameter <row_map>. Should be over 5.\n");
+            printf("Invalid amountOfFoodToWin. (<=0)");
         }
+        
     }
 
 

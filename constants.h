@@ -1,6 +1,12 @@
 #ifndef H_CONSTANTS
 #define H_CONSTANTS
 
+/*
+Logic constants
+*/
+#define FALSE 0
+#define TRUE !FALSE
+#define ZERO 0
 
 /*
 Game Constants
