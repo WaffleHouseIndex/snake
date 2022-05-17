@@ -1,5 +1,7 @@
 #include "map.h"
 #include "constants.h"
+#include "mem.h"
+#include "snake.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -33,7 +35,7 @@ S_MAP* initMap(int r, int c)
         */
         s_map->size_row = (r+2);
         s_map->size_col = (c+2);
-        s_map->map = initEmptyMapArray(s_map->size_row,s_map->size_col);
+        s_map->arr_map = initEmptyMapArray(s_map->size_row,s_map->size_col);
 
         /*now spawn border*/
         spawnBorder(s_map);
@@ -72,6 +74,32 @@ char** initEmptyMapArray(int m_rows, int m_cols)
     return a_map;
 }
 
+/*Goes through linked list and spawns the snake, assumed valid snake positioning*/
+void spawnSnake(int i,S_MAP* Map,NODE* n)
+{
+    S_SNODE* snode = (S_SNODE*)(n->data);
+    /*Logic for whether the node is a head,body or tail*/
+    if(i=I_HEAD)
+    {
+        updateMap(Map,snode->row,snode->col,SNAKE_H[snode->dir]);
+        spawnSnake(i++,Map,n->next);
+    }
+    else if(n->next!=NULL)
+    {
+        updateMap(Map,snode->row,snode->col,SNAKE_B[snode->dir]);
+        spawnSnake(i++,Map,n->next);
+    }
+    else
+    {
+        updateMap(Map,snode->row,snode->col,SNAKE_T[snode->dir]);
+    }
+
+}
+
+void updateMap(S_MAP* Map, int r, int c, char ch)
+{
+    (Map->arr_map)[r][c] = ch;
+}
 
 
 /* Puts a BORDER_SYM character at the first and last row and first and last column
@@ -83,7 +111,7 @@ void spawnBorder(S_MAP* s_map)
     int m_rows,m_cols;
 
     m_rows,m_cols = (s_map->size_row),(s_map->size_col);
-    map = s_map->map;
+    map = s_map->arr_map;
 
     /*Place in border*/
     for(j=0;j<m_rows;j++)
@@ -168,6 +196,6 @@ int isValidMap(int m_row,int m_col)
 
 void destroyMap(S_MAP* map)
 {
-    free(map->map);
+    free(map->arr_map);
     free(map);
 }

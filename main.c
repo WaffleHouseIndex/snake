@@ -49,6 +49,9 @@ int main(int argc, char* argv[])
         
     }
 
+    /*Destroy Heap Memory*/
+    destroyGame(snakeGame);
+
 
     return 0;
 }

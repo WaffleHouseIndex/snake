@@ -18,7 +18,7 @@ typedef struct
     E_DIRE dir; 
 }S_SNODE;
 
-
+void iterFuncLinkedList(NODE* n,void(*func)(void*));
 S_SNODE* initSnakeNode(int row,int col, char ch);
 S_SNODE* initEmptySnakeNode();
 E_DIRE getChToDirEnum(char ch);

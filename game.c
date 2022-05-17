@@ -4,6 +4,8 @@
 #include "game.h"
 #include "constants.h"
 #include "snakeio.h"
+#include "random.h"
+#include "output.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -16,6 +18,9 @@
 */
 S_GAME* initGame(char* filename, int amountOfFoodToWin)
 {
+    /*Start Random*/
+    initRandom();
+
     /*Open file and check for errors*/
     S_GAME* game;
 
@@ -58,8 +63,9 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
                 {
                     game = createEmptyGameStruct();
                     game->amountOfFoodToWin = amountOfFoodToWin;
-                    game->map = map;
+                    game->Map = map;
                     game->snake_head = snake_head;
+
                 }
                 else
                 {
@@ -79,13 +85,55 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
 }
 
 
+
+
+
+
+
+
+
+
 /*
 Takes in a valid game and starts gameloop
 */
 void runGame(S_GAME* game)
 {
+    S status;
+    int isGameBeaten;
+    int isPlayerDead;
 
+    int amountOfFoodEaten;
+    amountOfFoodEaten = 0;
+
+    /*Spawn Snake*/
+    spawnSnake(I_HEAD,game->Map,game->snake_head);
+
+    /*Output Initial game status*/
+    out_Map(game->Map);
+    printf("Food Eaten: %d / %d",amountOfFoodEaten,game->amountOfFoodToWin);
+    /*Game Loop*/
+    status = STOPPED;
+    isGameBeaten = FALSE;
+    isPlayerDead = FALSE;
+
+    while(status==RUNNING)
+    {
+       
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 Game Struct
@@ -97,7 +145,7 @@ S_GAME* createEmptyGameStruct()
 
 void destroyGame(S_GAME* game)
 {
-    destroyMap(game->map);
+    destroyMap(game->Map);
     destroyLinkedList(game->snake_head);
 
     free(game);

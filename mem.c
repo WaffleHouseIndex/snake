@@ -62,6 +62,17 @@ void destroyNode(NODE* n)
 
 }
 
+/*Iterates a through linked from node 'n' and calls 'func' with that given nodes data*/
+void iterFuncLinkedList(NODE* n,void(*func)(void*))
+{
+    func(n->data);
+
+    if(n->next!=NULL)
+    {
+        iterFuncLinkedList(n->next,func);
+    }
+}
+
 
 
 
