@@ -36,11 +36,23 @@ int main(int argc, char* argv[])
         amountOfFoodToWin = atoi(argv[I_FOOD_AMOUNT_TO_WIN]);
         if(amountOfFoodToWin>ZERO)
         {
+
             snakeGame = initGame(filename,amountOfFoodToWin);
+
+
             if(snakeGame!=NULL)
             {
+
+
+                /************/
                 runGame(snakeGame);
+
+
+                /*Destroy Heap Memory*/
+                destroyGame(snakeGame);
+
             }
+
         }
         else
         {
@@ -49,8 +61,6 @@ int main(int argc, char* argv[])
         
     }
 
-    /*Destroy Heap Memory*/
-    destroyGame(snakeGame);
 
 
     return 0;

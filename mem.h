@@ -5,17 +5,20 @@
 /*destroyData if not NULL, contains a function pointer to destroy
 content of data
 */
-typedef struct
+typedef struct NODE
 {
     void* data;
     void (*destroyData)(void*);
     struct NODE* next;
 }NODE; 
-  
+
 
 NODE* initEmptyNode();
-void pushNode(NODE** ptr_headNode,NODE* newNode)
+void pushNode(NODE** ptr_headNode,NODE* newNode);
 void destroyLinkedList(NODE* n);
-void destroyNode(NODE* n)
+void destroyNode(NODE* n);
+
+void backIterFuncLinkedList(NODE* n,void(*func)(NODE*));
+void iterFuncLinkedList(NODE* n,void(*func)(NODE*));
 
 #endif

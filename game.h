@@ -1,6 +1,9 @@
 #ifndef H_GAME
 #define H_GAME
 
+#include "mem.h"
+#include "map.h"
+
 typedef struct
 {
     unsigned int amountOfFoodToWin;

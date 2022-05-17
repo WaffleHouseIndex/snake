@@ -8,6 +8,7 @@ Logic constants
 #define TRUE !FALSE
 #define ZERO 0
 
+#define INT_ERROR -1
 /*
 Game Constants
 */

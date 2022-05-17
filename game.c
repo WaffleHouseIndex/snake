@@ -1,14 +1,16 @@
-#include "map.h"
-#include "snake.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 #include "mem.h"
+#include "snake.h"
+#include "map.h"
 #include "game.h"
 #include "constants.h"
 #include "snakeio.h"
 #include "random.h"
 #include "output.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 
 /*
     Takes in filename and amountOfFoodToWin will 
@@ -18,10 +20,8 @@
 */
 S_GAME* initGame(char* filename, int amountOfFoodToWin)
 {
-    /*Start Random*/
-    initRandom();
+    FILE* fptr;
 
-    /*Open file and check for errors*/
     S_GAME* game;
 
     int r,c;
@@ -33,18 +33,22 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
     game = NULL; 
     snake_head = NULL;
 
+    /*Start Random*/
+    initRandom();
+
     /*Opens filestream and checks for errors*/
-    FILE* fptr;
     fptr = fopen(filename,"r");
+
+
     if(fptr == NULL)
     {
-        perror(("Failed to open %s",filename));
+        perror("Failed to open file\n");
     }
     else
     {
         /*With file open initialise a map*/
         parseMapSize(fptr,&r,&c);
-        if(r == NULL || c == NULL)
+        if(r == INT_ERROR || c == INT_ERROR)
         {
             printf("Failed to initialise game!");
         }
@@ -59,6 +63,7 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
             else
             {
                 parseSnake(fptr,&snake_head);
+
                 if(snake_head!=NULL)
                 {
                     game = createEmptyGameStruct();
@@ -75,11 +80,10 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
             }
         }
         
-        
     }
 
     /*We are now finished with the file*/
-    close(fptr);
+    fclose(fptr);
 
     return game;
 }
@@ -99,9 +103,12 @@ Takes in a valid game and starts gameloop
 void runGame(S_GAME* game)
 {
     S status;
+
+    
     int isGameBeaten;
     int isPlayerDead;
-
+    
+   
     int amountOfFoodEaten;
     amountOfFoodEaten = 0;
 
@@ -111,14 +118,17 @@ void runGame(S_GAME* game)
     /*Output Initial game status*/
     out_Map(game->Map);
     printf("Food Eaten: %d / %d",amountOfFoodEaten,game->amountOfFoodToWin);
+
+
     /*Game Loop*/
     status = STOPPED;
     isGameBeaten = FALSE;
     isPlayerDead = FALSE;
+    
 
     while(status==RUNNING)
     {
-       
+        
     }
 }
 

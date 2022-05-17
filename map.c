@@ -1,9 +1,15 @@
-#include "map.h"
+#include <assert.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "constants.h"
 #include "mem.h"
 #include "snake.h"
-#include <string.h>
-#include <stdlib.h>
+#include "map.h"
+#include "random.h"
+#include "snakeio.h"
+#include "output.h"
 
 /*
 Handles the map 
@@ -50,15 +56,17 @@ S_MAP* initEmptyMapStruct()
     return (S_MAP*)malloc(sizeof(S_MAP));
 }
 
+
 /*
-Takes in playable area size m_rows x m_cols
-Will return a pointer to a 2d array of size parameter size
+Takes in total map size
+Will return a pointer to a 2d array of size m_rows x m_cols
 */
 char** initEmptyMapArray(int m_rows, int m_cols)
 {
     char** a_map;
     char* cols;
     int i;
+
 
     /*Create Map Rows*/
     a_map = (char**)malloc(m_rows*sizeof(char*));
@@ -74,20 +82,33 @@ char** initEmptyMapArray(int m_rows, int m_cols)
     return a_map;
 }
 
+
+
+
+
+
+
+
+
+
+
 /*Goes through linked list and spawns the snake, assumed valid snake positioning*/
 void spawnSnake(int i,S_MAP* Map,NODE* n)
 {
-    S_SNODE* snode = (S_SNODE*)(n->data);
+    out_Map(Map);
+    S_SNODE* snode;
+    snode = (S_SNODE*)(n->data);
+
     /*Logic for whether the node is a head,body or tail*/
-    if(i=I_HEAD)
+    if(i==I_HEAD)
     {
         updateMap(Map,snode->row,snode->col,SNAKE_H[snode->dir]);
-        spawnSnake(i++,Map,n->next);
+        spawnSnake(++i,Map,n->next);
     }
     else if(n->next!=NULL)
     {
         updateMap(Map,snode->row,snode->col,SNAKE_B[snode->dir]);
-        spawnSnake(i++,Map,n->next);
+        spawnSnake(++i,Map,n->next);
     }
     else
     {
@@ -110,7 +131,8 @@ void spawnBorder(S_MAP* s_map)
     char** map;
     int m_rows,m_cols;
 
-    m_rows,m_cols = (s_map->size_row),(s_map->size_col);
+    m_rows = s_map->size_row;
+    m_cols = s_map->size_col;
     map = s_map->arr_map;
 
     /*Place in border*/
@@ -196,6 +218,18 @@ int isValidMap(int m_row,int m_col)
 
 void destroyMap(S_MAP* map)
 {
+    int i;
+    /*iterate rows with pointers to columns and free them*/
+    for(i=0;i<map->size_row;i++)
+    {
+        free((map->arr_map)[i]);
+    }
+
+    /*Then free the row array itself*/
     free(map->arr_map);
+
+    /*Then destroy the struct*/
     free(map);
 }
+
+

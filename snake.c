@@ -1,3 +1,4 @@
+
 #include "snake.h"
 #include <stdlib.h>
 
@@ -17,7 +18,7 @@ S_SNODE* initSnakeNodeWithCh(int row,int col, char ch)
     dir = getChToDirEnum(ch);
 
     /*Check if a valid dir*/
-    if(dir != NULL)
+    if(dir != E_NULL)
     {
         newSnakeNode = initSnakeNodeWithDir(row,col,dir);
     }
@@ -28,7 +29,7 @@ S_SNODE* initSnakeNodeWithCh(int row,int col, char ch)
 S_SNODE* initSnakeNodeWithDir(int row,int col, E_DIRE dir)
 {
     S_SNODE* newSnakeNode;
-    newSnakeNode = initEmptyNode();
+    newSnakeNode = initEmptySnakeNode();
     newSnakeNode->row = row;
     newSnakeNode->col = col;
     newSnakeNode->dir = dir;
@@ -48,12 +49,14 @@ S_SNODE* initEmptySnakeNode()
 E_DIRE getChToDirEnum(char ch)
 {
     int i,j;
-    E_DIRE dir = NULL;
+
+    E_DIRE dir = E_NULL;
     for(i=0;i<(P_SNAKE_LEN);i++)
     {
+
         for(j=0;j<STATE_LEN;j++)
         {
-            if(ch==(*(P_SNAKE[i]))[j])
+            if(ch == P_SNAKE[i][j])
             {
                 /*Hey i am just as disgusted as you are*/
                 dir = (E_DIRE)j;
@@ -65,7 +68,8 @@ E_DIRE getChToDirEnum(char ch)
 }
 
 
-void destroySNode(S_SNODE* snode)
+void destroySNode(void* snode)
 {
-    free(snode);
+    free((S_SNODE*)snode);
 }
+

@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "snakeio.h"
 #include "mem.h"
 #include "snake.h"
+#include "constants.h"
+#include "snakeio.h"
 
 
 /*Reading formatted snake file*/
@@ -23,7 +24,7 @@
 /*
 Takes in a FILE* and pointers to row and col variables
 Reads the first line of given file  
-If it fails to read the ints r and c will be null
+If it fails to read the ints r and c will be INT_ERROR
 */
 void parseMapSize(FILE* fptr,int* r,int* c)
 {
@@ -37,8 +38,8 @@ void parseMapSize(FILE* fptr,int* r,int* c)
     if(nRead != 2)
     {
         /*An error must have occurred as it didnt read two ints*/
-        *r = NULL;
-        *c = NULL;
+        *r = INT_ERROR;
+        *c = INT_ERROR;
         if(ferror(fptr))
         {
             perror("Error reading file. File may be corrupted.");
@@ -72,8 +73,8 @@ void parseSnake(FILE* fptr,NODE** ptr_headNode)
     NODE* newNode;
     S_SNODE* newSNode;
 
-    nRead = fscanf(fptr,"%d %d %c",r,c,ch);
-    while(nRead!=NULL)
+    nRead = fscanf(fptr,"%d %d %c",&r,&c,&ch);
+    while(nRead!=EOF)
     {
         /*Should successfully read 3 things
             row, col and a character
@@ -84,9 +85,11 @@ void parseSnake(FILE* fptr,NODE** ptr_headNode)
              It is assumed that r and c are valid if read properly
 
              then push to front of linked list and update head
+
+             r+1 and c+1, to put in reference with actual map size 
             */
             newNode = initEmptyNode();
-            newSNode = initSnakeNode(r,c,ch);
+            newSNode = initSnakeNodeWithCh((r+1),(c+1),ch);
 
             /*Link SNode to linked list with its destroy function*/
             newNode->data = (void*)newSNode;
@@ -95,12 +98,12 @@ void parseSnake(FILE* fptr,NODE** ptr_headNode)
             /*Now push that node to the head of snake*/
             pushNode(ptr_headNode,newNode);
             
-            nRead = fscanf(fptr,"%d %d %c",r,c,ch);
+            nRead = fscanf(fptr,"%d %d %c",&r,&c,&ch);
         }
         else
         {
             *ptr_headNode = NULL;
-            nRead = NULL;
+            nRead = EOF;
         }
     }
 }

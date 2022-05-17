@@ -1,7 +1,11 @@
-#include "mem.h"
-#include "snake.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+
+#include "mem.h"
+#include "snake.h"
+#include "map.h"
+#include "output.h"
 
 
 /*
@@ -37,17 +41,6 @@ void pushNode(NODE** ptr_headNode,NODE* newNode)
 
 }
 
-/*Must feed it the head of linked list or else will partially destroy linkedlist*/
-void destroyLinkedList(NODE* n)
-{
-    if(n != NULL)
-    {
-        destroyLinkedList(n->next);
-    }
-
-    destroyNode(n);
-}
-
 
 void destroyNode(NODE* n)
 {
@@ -62,8 +55,33 @@ void destroyNode(NODE* n)
 
 }
 
+
+/*Must feed it the head of linked list or else will partially destroy linkedlist*/
+void destroyLinkedList(NODE* n)
+{
+    NODE* nextNode;
+    nextNode = n->next;
+
+    if(nextNode != NULL)
+    {
+        destroyLinkedList(nextNode);
+    }
+
+    destroyNode(n);
+}
+
 /*Iterates a through linked from node 'n' and calls 'func' with that given nodes data*/
-void iterFuncLinkedList(NODE* n,void(*func)(void*))
+void backIterFuncLinkedList(NODE* n,void(*func)(NODE*))
+{
+    if(n != NULL)
+    {
+        backIterFuncLinkedList(n->next,func);
+    }
+
+    func(n->data);
+}
+
+void iterFuncLinkedList(NODE* n,void(*func)(NODE*))
 {
     func(n->data);
 
