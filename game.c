@@ -1,4 +1,6 @@
 #include "map.h"
+#include "snake.h"
+#include "mem.h"
 #include "game.h"
 #include "constants.h"
 #include "snakeio.h"
@@ -20,8 +22,11 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
     int r,c;
     S_MAP* map;
 
+    NODE* snake_head;
+
     map = NULL;
     game = NULL; 
+    snake_head = NULL;
 
     /*Opens filestream and checks for errors*/
     FILE* fptr;
@@ -41,22 +46,34 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
         else
         {
             map = initMap(r,c);
+
             if(map==NULL)
             {
                 printf("Invalid map size.");
             }
             else
             {
-                game = createEmptyGameStruct();
-                game->amountOfFoodToWin = amountOfFoodToWin;
-                game->map = map;
+                parseSnake(fptr,&snake_head);
+                if(snake_head!=NULL)
+                {
+                    game = createEmptyGameStruct();
+                    game->amountOfFoodToWin = amountOfFoodToWin;
+                    game->map = map;
+                    game->snake_head = snake_head;
+                }
+                else
+                {
+                    printf("Invalid snake.");
+                }
+
             }
         }
         
         
     }
 
-    
+    /*We are now finished with the file*/
+    close(fptr);
 
     return game;
 }
@@ -80,5 +97,8 @@ S_GAME* createEmptyGameStruct()
 
 void destroyGame(S_GAME* game)
 {
-    
+    destroyMap(game->map);
+    destroyLinkedList(game->snake_head);
+
+    free(game);
 }

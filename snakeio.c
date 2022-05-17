@@ -4,7 +4,7 @@
 
 #include "snakeio.h"
 #include "mem.h"
-
+#include "snake.h"
 
 
 /*Reading formatted snake file*/
@@ -52,14 +52,57 @@ void parseMapSize(FILE* fptr,int* r,int* c)
 
 
 /*
-Takes in a FILE* and pointer to the NODE of the snake_head
-Calls functions from mem.c to create linked list as it reads file
-If it completes a snake will put a pointer in snake_head else
-snake_head will be a nullptr
-*/
-void parseSnake(FILE* ptr,NODE* snake_head)
-{
+******MUST BE CALLED AFTER PARSEMAPSIZE*******
 
+Takes in a FILE* and pointer to a pointer to the head NODE
+Calls functions from mem.c to create linked list as it reads file
+If it completes a snake will put a pointer in ptr_headNode else
+ptr_headNode will be a nullptr
+
+FYI
+ptr_headNode is pointer to a linkedlist node stored elsewhere 
+but is updated elsewhere via pushNode in mem.c
+*/
+void parseSnake(FILE* fptr,NODE** ptr_headNode)
+{
+    int nRead;
+    int r,c;
+    char ch;
+
+    NODE* newNode;
+    S_SNODE* newSNode;
+
+    nRead = fscanf(fptr,"%d %d %c",r,c,ch);
+    while(nRead!=NULL)
+    {
+        /*Should successfully read 3 things
+            row, col and a character
+        */
+        if(nRead == 3)
+        {
+            /*Try create a snake struct using read values
+             It is assumed that r and c are valid if read properly
+
+             then push to front of linked list and update head
+            */
+            newNode = initEmptyNode();
+            newSNode = initSnakeNode(r,c,ch);
+
+            /*Link SNode to linked list with its destroy function*/
+            newNode->data = (void*)newSNode;
+            newNode->destroyData = destroySNode;
+
+            /*Now push that node to the head of snake*/
+            pushNode(ptr_headNode,newNode);
+            
+            nRead = fscanf(fptr,"%d %d %c",r,c,ch);
+        }
+        else
+        {
+            *ptr_headNode = NULL;
+            nRead = NULL;
+        }
+    }
 }
 
 

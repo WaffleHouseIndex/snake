@@ -24,8 +24,8 @@ typedef struct
 S_MAP* initMap(int r, int c);
 S_MAP* initEmptyMapStruct();
 char** initEmptyMapArray(int m_rows, int m_cols);
-
 void spawnBorder(S_MAP* s_map);
+void destroyMap(S_MAP* map)
 
 /*To Change*/
 void spawnFood(char*** map,int m_rows,int m_cols);

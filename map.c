@@ -165,3 +165,9 @@ int isValidMap(int m_row,int m_col)
     
     return isValid;
 }
+
+void destroyMap(S_MAP* map)
+{
+    free(map->map);
+    free(map);
+}

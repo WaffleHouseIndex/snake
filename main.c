@@ -37,7 +37,10 @@ int main(int argc, char* argv[])
         if(amountOfFoodToWin>ZERO)
         {
             snakeGame = initGame(filename,amountOfFoodToWin);
-            runGame(snakeGame);
+            if(snakeGame!=NULL)
+            {
+                runGame(snakeGame);
+            }
         }
         else
         {
