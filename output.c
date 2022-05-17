@@ -1,11 +1,11 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "mem.h"
 #include "snake.h"
 #include "map.h"
 #include "output.h"
 
-
-#include <stdio.h>
-#include <stdlib.h>
 
 
 void out_Map(S_MAP* Map)
@@ -18,7 +18,7 @@ void out_Map(S_MAP* Map)
     {
         for(j=0;j<Map->size_col;j++)
         {
-            printf( "%c", (Map->arr_map)[i][j]);
+            printf( "%c ", (Map->arr_map)[i][j]);
         }
         printf("\n");
     }

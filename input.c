@@ -1,6 +1,6 @@
 #include "input.h"
-#include "map.h"
 #include "terminal.h"
+#include "constants.h"
 #include <stdio.h>
 
 char getInput()

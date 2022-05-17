@@ -8,7 +8,6 @@
 #include "snake.h"
 #include "map.h"
 #include "random.h"
-#include "snakeio.h"
 #include "output.h"
 
 /*
@@ -43,8 +42,9 @@ S_MAP* initMap(int r, int c)
         s_map->size_col = (c+2);
         s_map->arr_map = initEmptyMapArray(s_map->size_row,s_map->size_col);
 
-        /*now spawn border*/
+        /*now spawn border and food*/
         spawnBorder(s_map);
+        spawnFood(s_map);
         
     }
 
@@ -84,21 +84,30 @@ char** initEmptyMapArray(int m_rows, int m_cols)
 
 
 
-
-
-
-
-
+/*Removes snek from map arrays*/
+void clearSnake(char** arr_map,NODE* snake_head)
+{
+    NODE* n;
+    S_SNODE* snakeNode;
+    n = snake_head;
+    while(n != NULL)
+    {
+        snakeNode = (S_SNODE*)(n->data);
+        arr_map[snakeNode->row][snakeNode->col] = EMPTY_SYM;
+        
+        n=n->next;
+    }
+    
+}
 
 
 
 /*Goes through linked list and spawns the snake, assumed valid snake positioning*/
 void spawnSnake(int i,S_MAP* Map,NODE* n)
 {
-    out_Map(Map);
     S_SNODE* snode;
-    snode = (S_SNODE*)(n->data);
 
+    snode = (S_SNODE*)(n->data);
     /*Logic for whether the node is a head,body or tail*/
     if(i==I_HEAD)
     {
@@ -160,17 +169,17 @@ void spawnBorder(S_MAP* s_map)
 
 /*Generates random row, column (within playable map coords)
     checks that the position is empty then places food onto map array*/
-void spawnFood(char*** map,int m_rows,int m_cols)
+void spawnFood(S_MAP* Map)
 {
     int r,c;
     do
     {
-        r = random(1,m_rows-2); /*-2 for index and border*/
-        c = random(1,m_cols-2);
-    }while(!isObj(map,r,c,EMPTY_SYM));
+        r = random(1,(Map->size_row)-2); /*-2 for index and border*/
+        c = random(1,(Map->size_col)-2);
+    }while(!isObj(Map->arr_map,r,c,EMPTY_SYM));
     
 
-    (*map)[r][c] = FOOD_SYM;
+    (Map->arr_map)[r][c] = FOOD_SYM;
 }
 
 /*
@@ -180,12 +189,11 @@ FOOD_SYM,EMPTY_SYM,BORDER.
 
 Bounds should be checked before using
 */
-int isObj(char*** map,int r,int c,char obj)
+int isObj(char** arr_map,int r,int c,char obj)
 {
     int result;
     result = FALSE;
-
-    if((*map)[r][c] == obj)
+    if(arr_map[r][c] == obj)
     {
         result = TRUE;
     }
@@ -232,4 +240,10 @@ void destroyMap(S_MAP* map)
     free(map);
 }
 
+
+void printSNode(NODE* n)
+{
+    S_SNODE* sn = (S_SNODE*)(n->data);
+    printf("SNODE: r - %d, c - %d, d - %d\n",sn->row,sn->col,sn->dir);
+}
 

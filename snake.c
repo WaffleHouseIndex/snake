@@ -73,3 +73,16 @@ void destroySNode(void* snode)
     free((S_SNODE*)snode);
 }
 
+void getSNodeCoord(int* r, int* c,void* sn)
+{
+    *r = ((S_SNODE*)sn)->row;
+    *c = ((S_SNODE*)sn)->col;  
+}
+
+void setSNodeCoordAndDir(int r, int c, E_DIRE d,S_SNODE* sn)
+{
+    sn->row = r;
+    sn->col = c;
+    sn->dir = d;
+}
+

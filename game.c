@@ -10,6 +10,9 @@
 #include "snakeio.h"
 #include "random.h"
 #include "output.h"
+#include "input.h"
+#include "movement.h"
+#include "objects.h"
 
 
 /*
@@ -105,40 +108,61 @@ void runGame(S_GAME* game)
     S status;
 
     
-    int isGameBeaten;
+    int foodEaten;
     int isPlayerDead;
     
-   
-    int amountOfFoodEaten;
-    amountOfFoodEaten = 0;
-
     /*Spawn Snake*/
     spawnSnake(I_HEAD,game->Map,game->snake_head);
 
+    
+    status = RUNNING;
+    foodEaten = ZERO;
+    isPlayerDead = FALSE;
+
     /*Output Initial game status*/
     out_Map(game->Map);
-    printf("Food Eaten: %d / %d",amountOfFoodEaten,game->amountOfFoodToWin);
-
-
-    /*Game Loop*/
-    status = STOPPED;
-    isGameBeaten = FALSE;
-    isPlayerDead = FALSE;
+    printf("Food Eaten: %d / %d\n",foodEaten,game->amountOfFoodToWin);
     
-
+    /*Game Loop*/
     while(status==RUNNING)
     {
+        char inp = getInput();
+        if(isValid(inp))
+        {
+            /*Move Snek*/
+            move(game->Map->arr_map,game->snake_head,inp);
+
+            /*Check for collision with body and food*/
+            checkCollisions(&foodEaten,&isPlayerDead,game->Map,game->snake_head);
+
+            /*Place Snek back on map*/
+            spawnSnake(I_HEAD,game->Map,game->snake_head);
+
+            
+            out_Map(game->Map);
+            printf("Food Eaten: %d / %d\n",foodEaten,game->amountOfFoodToWin);
+        }
+        else
+        {
+            out_Map(game->Map);
+            printf("Invalid Input.\n");
+        }
+
+        if(foodEaten == game->amountOfFoodToWin)
+        {
+            printf("You've Won! :)\n");
+            status = STOPPED;
+        }
+
+        if(isPlayerDead)
+        {
+            printf("You've Died! ;(\n");
+            status = STOPPED;
+        }
         
+
     }
 }
-
-
-
-
-
-
-
-
 
 
 

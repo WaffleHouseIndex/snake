@@ -4,21 +4,13 @@
 
 #include "mem.h"
 #include "snake.h"
-#include "map.h"
-#include "output.h"
-
+#include "constants.h"
 
 /*
 Memory manipulation of linked list
-*/
 
-
-
-/*  ************Generic********** */
-
-/*
 The linked list will store the next node and a void* data
-Data will have a pointer to a struct
+Data will have a pointer to a point in memory, could be NULL
 
 */
 NODE* initEmptyNode()
@@ -55,35 +47,64 @@ void destroyNode(NODE* n)
 
 }
 
+/*Takes in linkedlist head and returns the nth element
+    or if it reaches end of LL first will return NULL*/
+NODE* getNthItem(int n, NODE* head)
+{
+    int i,cont;
+    NODE* node;
+
+
+    /*Start at first element*/
+    i=1;
+    cont = TRUE;
+    node = head;
+
+    
+    do
+    {
+        if(i==n)
+        {
+            cont = FALSE;
+        }
+        else if(node->next == NULL)
+        {
+            cont = FALSE;
+            node = NULL;
+        }
+        else
+        {
+            node = node->next;
+            i++;
+        }
+
+    } while (cont);
+
+    return node;
+    
+}
+
 
 /*Must feed it the head of linked list or else will partially destroy linkedlist*/
 void destroyLinkedList(NODE* n)
 {
-    NODE* nextNode;
-    nextNode = n->next;
-
-    if(nextNode != NULL)
-    {
-        destroyLinkedList(nextNode);
-    }
-
-    destroyNode(n);
+   backIterFuncLinkedList(n,destroyNode);
 }
 
-/*Iterates a through linked from node 'n' and calls 'func' with that given nodes data*/
+/*Simple iterators forward and backward, calling a void functional pointer with NODE* type*/
 void backIterFuncLinkedList(NODE* n,void(*func)(NODE*))
 {
-    if(n != NULL)
+    if(n->next != NULL)
     {
         backIterFuncLinkedList(n->next,func);
     }
 
-    func(n->data);
+    func(n);
 }
 
 void iterFuncLinkedList(NODE* n,void(*func)(NODE*))
 {
-    func(n->data);
+    func(n);
 
     if(n->next!=NULL)
     {

@@ -15,6 +15,9 @@ Game Constants
 #define I_HEAD 0 
 #define I_TWO 1
 
+#define NTH_HEAD 1
+#define NTH_BLOKTWO 2
+
 #define MIN_ROW_MAP 5
 #define MIN_COL_MAP 5
 #define MIN_LEN_SNEK 3

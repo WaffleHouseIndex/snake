@@ -1,21 +1,27 @@
-#include "movement.h"
+#include <string.h>
+#include <stdlib.h>
+#include "stdio.h"
+
+#include "mem.h"
 #include "snake.h"
 #include "map.h"
-#include "mem.h"
+#include "constants.h"
+#include "movement.h"
 
 /*  Moves snek with input char {w,a,s,d}, 
     input should already be checked to before */
-void move(char*** map,SNEK_BLOK** snek,int m_rows,int m_cols,int len_snek,char inp)
-{    
+void move(char** arr_map,NODE* snake_head,char inp)
+{  
     int move_r;
     int move_c;
-    Dire move_d;
+    E_DIRE move_d;
+
 
     /*Clear Snek off map*/
-    clearSnek(map,snek,m_rows,m_cols,len_snek);
+    clearSnake(arr_map,snake_head);
 
     /*Put Head of Snek coords in move_d,move_r & move_c*/
-    getBlokCoords(&move_r,&move_c,I_HEAD,snek,len_snek);
+    getSNodeCoord(&move_r,&move_c,snake_head->data);
 
     /*Change coords to move*/
     switch(inp)
@@ -40,20 +46,40 @@ void move(char*** map,SNEK_BLOK** snek,int m_rows,int m_cols,int len_snek,char i
             break;
 
     }
-
+    
     /*Check Validity and move snek*/
-    if(isValidMove(&move_r,&move_c,map,snek,len_snek))
+    if(isValidMove(&move_r,&move_c,arr_map,snake_head))
     {
-        moveSnek(move_r,move_c,move_d,snek,len_snek);
+        moveSnake(move_r,move_c,move_d,snake_head);
     }
+}
+
+/*
+    Moves the snek by moving snek "blok" status down the head to tail (down the linked list)
+    Hence, moving the snek.
+    The 2nd "blok" becomes the r,c,d of the head, then 3rd becomes...etc
+*/
+void moveSnake(int move_r,int move_c,E_DIRE move_d,NODE* snake_head)
+{
+    NODE* nextNode;
+    S_SNODE* snode = (S_SNODE*)(snake_head->data);
+    nextNode = snake_head->next;
+
+
+    if(nextNode != NULL)
+    {
+        moveSnake(snode->row,snode->col,snode->dir,nextNode);
+    }
+
+    setSNodeCoordAndDir(move_r,move_c,move_d,(S_SNODE*)(snake_head->data));
+    
 }
 
 
 
 
 /*Checks if a valid move returns TRUE if it is*/
-int isValidMove(int* move_r, int* move_c,char*** map,
-SNEK_BLOK** snek,int len_snek)
+int isValidMove(int* move_r, int* move_c,char** arr_map,NODE* snake_head)
 {
     /*Is not valid if:
         - Is a border move
@@ -66,9 +92,9 @@ SNEK_BLOK** snek,int len_snek)
     result = TRUE;
 
     /*Get Coords of BLOK_TWO into vars*/
-    getBlokCoords(&BLOK_TWO_r,&BLOK_TWO_c,I_TWO,snek,len_snek);
+    getSNodeCoord(&BLOK_TWO_r,&BLOK_TWO_c,getNthItem(NTH_BLOKTWO,snake_head)->data);
 
-    if(isObj(map,*move_r,*move_c,BORDER_SYM))
+    if(isObj(arr_map,*move_r,*move_c,BORDER_SYM))
     {
         result = FALSE;
     }
@@ -79,4 +105,5 @@ SNEK_BLOK** snek,int len_snek)
 
     return result;
 }
+
 

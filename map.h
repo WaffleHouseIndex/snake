@@ -31,10 +31,13 @@ void updateMap(S_MAP* Map, int r, int c, char ch);
 
 void spawnBorder(S_MAP* s_map);
 void spawnSnake(int i,S_MAP* Map,NODE* n);
-void spawnFood(char*** map,int m_rows,int m_cols);
+void spawnFood(S_MAP* Map);
 
+void clearSnake(char** arr_map,NODE* snake_head);
 
-int isObj(char*** map,int r,int c,char obj);
+int isObj(char** map,int r,int c,char obj);
 int isValidMap(int m_row,int m_col);
 
+
+void printSNode(NODE* n);
 #endif

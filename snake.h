@@ -23,6 +23,10 @@ S_SNODE* initSnakeNodeWithCh(int row,int col, char ch);
 S_SNODE* initSnakeNodeWithDir(int row,int col, E_DIRE dir);
 S_SNODE* initEmptySnakeNode();
 E_DIRE getChToDirEnum(char ch);
+void getSNodeCoord(int* r, int* c,void* sn);
+void setSNodeCoordAndDir(int r, int c, E_DIRE d,S_SNODE* sn);
+
+
 void destroySNode(void* snode);
 
 #endif

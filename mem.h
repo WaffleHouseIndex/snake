@@ -21,4 +21,6 @@ void destroyNode(NODE* n);
 void backIterFuncLinkedList(NODE* n,void(*func)(NODE*));
 void iterFuncLinkedList(NODE* n,void(*func)(NODE*));
 
+NODE* getNthItem(int n, NODE* head);
+
 #endif
