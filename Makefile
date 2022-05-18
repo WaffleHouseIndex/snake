@@ -1,7 +1,7 @@
 # Makefile Variables
 CC       = gcc
 EXEC    = snake
-CFLAGS = -Wall -Werror -ansi -pedantic -g
+CFLAGS = -Wall -Werror -ansi -pedantic
 OBJ      = main.o game.o map.o mem.o input.o output.o snake.o snakeio.o random.o movement.o terminal.o objects.o
 
 # GOD MODE 

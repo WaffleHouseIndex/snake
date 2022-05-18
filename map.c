@@ -204,20 +204,20 @@ int isValidMap(int m_row,int m_col)
 {
     int isValid = FALSE;
 
-    if(m_row>MIN_ROW_MAP)
+    if(m_row>=MIN_ROW_MAP)
     {
-        if(m_col>MIN_COL_MAP)
+        if(m_col>=MIN_COL_MAP)
         {
             isValid = TRUE;
         }
         else
         {
-            printf("Invalid parameter <col_map>. Should be over 5.\n");
+            printf("Invalid <col_map> value. Should be >= %d.\n",MIN_COL_MAP);
         }
     }
     else
     {
-        printf("Invalid parameter <row_map>. Should be over 5.\n");
+        printf("Invalid <row_map> value. Should be >= %d.\n",MIN_ROW_MAP);
     }
     
     return isValid;

@@ -11,6 +11,4 @@ Command Line Constants
 #define I_FOOD_AMOUNT_TO_WIN 2
 
 
-
-
 #endif

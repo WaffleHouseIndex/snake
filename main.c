@@ -34,9 +34,12 @@ int main(int argc, char* argv[])
         /*Under the assumption of correct datatypes*/
         filename = argv[I_SNAKE_FILENAME];
         amountOfFoodToWin = atoi(argv[I_FOOD_AMOUNT_TO_WIN]);
-        if(amountOfFoodToWin>ZERO)
-        {
 
+
+        if(amountOfFoodToWin>=MIN_FOOD_AMOUNT_TO_WIN)
+        {
+            
+            /***********************************************/
             snakeGame = initGame(filename,amountOfFoodToWin);
 
 
@@ -44,11 +47,11 @@ int main(int argc, char* argv[])
             {
 
 
-                /************/
+                /******************/
                 runGame(snakeGame);
 
 
-                /*Destroy Heap Memory*/
+                /******************/
                 destroyGame(snakeGame);
 
             }
@@ -56,7 +59,7 @@ int main(int argc, char* argv[])
         }
         else
         {
-            printf("Invalid amountOfFoodToWin. (<=0)");
+            printf("Invalid amountOfFoodToWin. Should be >= %d.\n",MIN_FOOD_AMOUNT_TO_WIN);
         }
         
     }

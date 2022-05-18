@@ -42,13 +42,9 @@ void parseMapSize(FILE* fptr,int* r,int* c)
         *c = INT_ERROR;
         if(ferror(fptr))
         {
-            perror("Error reading file. File may be corrupted.");
+            perror("Error reading file. File may be corrupted.: ");
         }
-
     }
-
-
-
 }
 
 
