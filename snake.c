@@ -1,9 +1,12 @@
 
-#include "snake.h"
 #include <stdlib.h>
+#include "snake.h"
+
+
+
+static const char* P_SNAKE[P_SNAKE_LEN] = {SNAKE_H,SNAKE_B,SNAKE_T};
 
 /*Contains snake game specific functions*/
-
 
 /*
 Takes in row,col and ch

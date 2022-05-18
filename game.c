@@ -143,7 +143,16 @@ void runGame(S_GAME* game)
             if(isFoodEaten)
             {
                 amountOfFoodEaten++;
-                spawnFood(game->Map);
+                if(amountOfFoodEaten == game->amountOfFoodToWin)
+                {
+                    printf("You've Won! :)\n");
+                    status = STOPPED;
+                }
+                else
+                {
+                    spawnFood(game->Map);
+                }
+    
                 isFoodEaten = FALSE;
             }
             
@@ -156,11 +165,6 @@ void runGame(S_GAME* game)
             printf("Invalid Input.\n");
         }
 
-        if(amountOfFoodEaten == game->amountOfFoodToWin)
-        {
-            printf("You've Won! :)\n");
-            status = STOPPED;
-        }
 
         if(isPlayerDead)
         {
