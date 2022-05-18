@@ -44,7 +44,6 @@ S_MAP* initMap(int r, int c)
 
         /*now spawn border and food*/
         spawnBorder(s_map);
-        spawnFood(s_map);
         
     }
 

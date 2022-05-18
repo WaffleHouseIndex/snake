@@ -10,7 +10,7 @@
 #include "constants.h"
 
 
-void checkCollisions(int* foodEaten,int* isPlayerDead,S_MAP* Map,NODE* snake_head)
+void checkCollisions(int* isFoodEaten,int* isPlayerDead,S_MAP* Map,NODE* snake_head)
 {
     /*Check head position against food*/
     int head_r, head_c;
@@ -24,9 +24,7 @@ void checkCollisions(int* foodEaten,int* isPlayerDead,S_MAP* Map,NODE* snake_hea
 
     if(isObj(Map->arr_map,head_r,head_c,FOOD_SYM))
     {
-        (*foodEaten)++;
-
-        spawnFood(Map);
+        *isFoodEaten = TRUE;
     }
 
     /*Check head position, against other snake pieces, skipping the head of course!

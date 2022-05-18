@@ -108,20 +108,22 @@ void runGame(S_GAME* game)
     S status;
 
     
-    int foodEaten;
+    int isFoodEaten;
+    int amountOfFoodEaten;
     int isPlayerDead;
     
-    /*Spawn Snake*/
-    spawnSnake(I_HEAD,game->Map,game->snake_head);
-
-    
     status = RUNNING;
-    foodEaten = ZERO;
+    isFoodEaten = FALSE;
     isPlayerDead = FALSE;
+    amountOfFoodEaten = ZERO;
+
+    /*Initial Spawning, order is crucial as spawnFood needs the snake on map*/
+    spawnSnake(I_HEAD,game->Map,game->snake_head);
+    spawnFood(game->Map);
 
     /*Output Initial game status*/
     out_Map(game->Map);
-    printf("Food Eaten: %d / %d\n",foodEaten,game->amountOfFoodToWin);
+    printf("Food Eaten: %d / %d\n",amountOfFoodEaten,game->amountOfFoodToWin);
     
     /*Game Loop*/
     while(status==RUNNING)
@@ -133,14 +135,20 @@ void runGame(S_GAME* game)
             move(game->Map->arr_map,&(game->snake_head),inp);
 
             /*Check for collision with body and food*/
-            checkCollisions(&foodEaten,&isPlayerDead,game->Map,game->snake_head);
+            checkCollisions(&isFoodEaten,&isPlayerDead,game->Map,game->snake_head);
 
             /*Place Snek back on map*/
             spawnSnake(I_HEAD,game->Map,game->snake_head);
 
+            if(isFoodEaten)
+            {
+                amountOfFoodEaten++;
+                spawnFood(game->Map);
+                isFoodEaten = FALSE;
+            }
             
             out_Map(game->Map);
-            printf("Food Eaten: %d / %d\n",foodEaten,game->amountOfFoodToWin);
+            printf("Food Eaten: %d / %d\n",amountOfFoodEaten,game->amountOfFoodToWin);
         }
         else
         {
@@ -148,7 +156,7 @@ void runGame(S_GAME* game)
             printf("Invalid Input.\n");
         }
 
-        if(foodEaten == game->amountOfFoodToWin)
+        if(amountOfFoodEaten == game->amountOfFoodToWin)
         {
             printf("You've Won! :)\n");
             status = STOPPED;
