@@ -14,7 +14,11 @@ void checkCollisions(int* isFoodEaten,int* isPlayerDead,S_MAP* Map,NODE* snake_h
 {
     /*Check head position against food*/
     int head_r, head_c;
+
+    /*(in pompous tone) ISO C90 forbids mixed declarations and code*/
+    #ifndef UNBEATABLE
     NODE* nextNode;
+    #endif
 
     S_SNODE* snakeNode;
     snakeNode = (S_SNODE*)(snake_head->data);
@@ -30,6 +34,8 @@ void checkCollisions(int* isFoodEaten,int* isPlayerDead,S_MAP* Map,NODE* snake_h
     /*Check head position, against other snake pieces, skipping the head of course!
         Obviously only the head could collide with itself if UNBEATABLE isn't in effect
         If they are equal it has collided, hence isPlayerDead is set to TRUE*/
+
+    
     #ifndef UNBEATABLE
     nextNode = snake_head->next;
     while (nextNode != NULL)

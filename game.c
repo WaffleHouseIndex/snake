@@ -45,7 +45,7 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
 
     if(fptr == NULL)
     {
-        perror("Failed to open file\n");
+        perror("Failed to open file: ");
     }
     else
     {
@@ -53,7 +53,7 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
         parseMapSize(fptr,&r,&c);
         if(r == INT_ERROR || c == INT_ERROR)
         {
-            printf("Failed to initialise game!");
+            printf("Failed to initialise game!\n");
         }
         else
         {
@@ -61,7 +61,7 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
 
             if(map==NULL)
             {
-                printf("Invalid map size.");
+                printf("Invalid map size.\n");
             }
             else
             {
@@ -69,6 +69,7 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
 
                 if(snake_head!=NULL)
                 {
+                    /*Create game struct as everything good to go*/
                     game = createEmptyGameStruct();
                     game->amountOfFoodToWin = amountOfFoodToWin;
                     game->Map = map;
@@ -77,16 +78,20 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
                 }
                 else
                 {
-                    printf("Invalid snake.");
+                    destroyMap(map);
+
+
+                    printf("Invalid snake.\n");
                 }
 
             }
         }
+
+        /*We are now finished with the file*/
+        fclose(fptr);
         
     }
 
-    /*We are now finished with the file*/
-    fclose(fptr);
 
     return game;
 }

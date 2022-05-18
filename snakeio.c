@@ -91,14 +91,31 @@ void parseSnake(FILE* fptr,NODE** ptr_headNode)
             newNode = initEmptyNode();
             newSNode = initSnakeNodeWithCh((r+1),(c+1),ch);
 
+
             /*Link SNode to linked list with its destroy function*/
             newNode->data = (void*)newSNode;
             newNode->destroyData = destroySNode;
 
             /*Now push that node to the head of snake*/
             pushNode(ptr_headNode,newNode);
+
+            /*Check for problems*/
+            if(newSNode != NULL)
+            {
+                nRead = fscanf(fptr,"%d %d %c",&r,&c,&ch);
+            }
+            else
+            {
+                /*Don't continue as an error has occurred*/
+                nRead = EOF;
+
+                /*Destroy snake*/
+                destroyLinkedList(*ptr_headNode);
+
+                *ptr_headNode = NULL; 
+                
+            }
             
-            nRead = fscanf(fptr,"%d %d %c",&r,&c,&ch);
         }
         else
         {

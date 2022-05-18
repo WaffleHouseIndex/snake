@@ -25,6 +25,10 @@ S_SNODE* initSnakeNodeWithCh(int row,int col, char ch)
     {
         newSnakeNode = initSnakeNodeWithDir(row,col,dir);
     }
+    else
+    {
+        newSnakeNode = NULL;
+    }
 
     return newSnakeNode;
 }

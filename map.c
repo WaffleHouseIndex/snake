@@ -105,18 +105,18 @@ void clearSnake(char** arr_map,NODE* snake_head)
 void spawnSnake(int i,S_MAP* Map,NODE* n)
 {
     S_SNODE* snode;
-
     snode = (S_SNODE*)(n->data);
+
     /*Logic for whether the node is a head,body or tail*/
     if(i==I_HEAD)
     {
-        updateMap(Map,snode->row,snode->col,SNAKE_H[snode->dir]);
         spawnSnake(++i,Map,n->next);
+        updateMap(Map,snode->row,snode->col,SNAKE_H[snode->dir]);
     }
     else if(n->next!=NULL)
     {
-        updateMap(Map,snode->row,snode->col,SNAKE_B[snode->dir]);
         spawnSnake(++i,Map,n->next);
+        updateMap(Map,snode->row,snode->col,SNAKE_B[snode->dir]);
     }
     else
     {
