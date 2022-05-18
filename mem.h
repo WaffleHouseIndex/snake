@@ -14,6 +14,8 @@ typedef struct NODE
 
 
 NODE* initEmptyNode();
+NODE* initNodeWithData(void* d);
+NODE* initNodeWithDataWithDestroyFunc(void* d,void (*destroyData)(void*));
 void pushNode(NODE** ptr_headNode,NODE* newNode);
 void destroyLinkedList(NODE* n);
 void destroyNode(NODE* n);

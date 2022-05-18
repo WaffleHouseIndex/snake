@@ -15,7 +15,27 @@ Data will have a pointer to a point in memory, could be NULL
 */
 NODE* initEmptyNode()
 {
-    return (NODE*)malloc(sizeof(NODE));
+    NODE* newNode;
+    newNode = (NODE*)malloc(sizeof(NODE));
+
+    newNode->data = NULL;
+    newNode->next = NULL;
+    newNode->destroyData = NULL;
+
+    return newNode;
+}
+
+NODE* initNodeWithData(void* d)
+{
+    NODE* newNode = initEmptyNode();
+    newNode->data = d;
+    return newNode;
+}
+NODE* initNodeWithDataWithDestroyFunc(void* d,void (*destroyData)(void*))
+{
+    NODE* newNode = initNodeWithData(d);
+    newNode->destroyData = destroyData;
+    return newNode;
 }
 
 /*Takes in a pointer to the head of linked list

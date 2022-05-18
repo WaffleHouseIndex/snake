@@ -130,7 +130,7 @@ void runGame(S_GAME* game)
         if(isValid(inp))
         {
             /*Move Snek*/
-            move(game->Map->arr_map,game->snake_head,inp);
+            move(game->Map->arr_map,&(game->snake_head),inp);
 
             /*Check for collision with body and food*/
             checkCollisions(&foodEaten,&isPlayerDead,game->Map,game->snake_head);

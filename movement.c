@@ -10,7 +10,7 @@
 
 /*  Moves snek with input char {w,a,s,d}, 
     input should already be checked to before */
-void move(char** arr_map,NODE* snake_head,char inp)
+void move(char** arr_map,NODE** snake_head,char inp)
 {  
     int move_r;
     int move_c;
@@ -18,10 +18,10 @@ void move(char** arr_map,NODE* snake_head,char inp)
 
 
     /*Clear Snek off map*/
-    clearSnake(arr_map,snake_head);
+    clearSnake(arr_map,*snake_head);
 
     /*Put Head of Snek coords in move_d,move_r & move_c*/
-    getSNodeCoord(&move_r,&move_c,snake_head->data);
+    getSNodeCoord(&move_r,&move_c,(*snake_head)->data);
 
     /*Change coords to move*/
     switch(inp)
@@ -46,18 +46,36 @@ void move(char** arr_map,NODE* snake_head,char inp)
             break;
 
     }
-    
-    /*Check Validity and move snek*/
-    if(isValidMove(&move_r,&move_c,arr_map,snake_head))
+
+    /*Check Validity and move snake*/
+    if(isValidMove(&move_r,&move_c,arr_map,*snake_head))
     {
-        moveSnake(move_r,move_c,move_d,snake_head);
+        /*Now check if the calculated move coincides that of food*/
+        if(isObj(arr_map,move_r,move_c,FOOD_SYM))
+        {
+            /*It does so push a new node onto the snake with move_d,r,c*/
+            
+            pushNode(snake_head,initNodeWithDataWithDestroyFunc((void*)(initSnakeNodeWithDir(move_r,move_c,move_d)),destroySNode));
+
+            /*Collision will be detected later*/
+
+        }
+        else
+        {
+            moveSnake(move_r,move_c,move_d,*snake_head);
+        }
     }
+
+    
+    
+    
+    
 }
 
 /*
-    Moves the snek by moving snek "blok" status down the head to tail (down the linked list)
+    Moves the snake moving snake node status down the head to tail (down the linked list)
     Hence, moving the snek.
-    The 2nd "blok" becomes the r,c,d of the head, then 3rd becomes...etc
+    The 2nd snode becomes the r,c,d of the head, then 3rd becomes the 2nd...etc
 */
 void moveSnake(int move_r,int move_c,E_DIRE move_d,NODE* snake_head)
 {
