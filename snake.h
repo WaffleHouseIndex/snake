@@ -18,17 +18,17 @@ typedef struct
     int row;
     int col;
     E_DIRE dir; 
-}S_SNODE;
+}SnakeNode;
 
 
-S_SNODE* initSnakeNodeWithCh(int row,int col, char ch);
-S_SNODE* initSnakeNodeWithDir(int row,int col, E_DIRE dir);
-S_SNODE* initEmptySnakeNode();
+SnakeNode* initSnakeNodeWithCh(int row,int col, char ch);
+SnakeNode* initSnakeNodeWithDir(int row,int col, E_DIRE dir);
+SnakeNode* initEmptySnakeNode();
 E_DIRE getChToDirEnum(char ch);
 void getSNodeCoord(int* r, int* c,void* sn);
-void setSNodeCoordAndDir(int r, int c, E_DIRE d,S_SNODE* sn);
+void setSNodeCoordAndDir(int r, int c, E_DIRE d,SnakeNode* sn);
 
 
-void destroySNode(void* snode);
+void destroySnakeNode(void* snode);
 
 #endif

@@ -3,25 +3,26 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "mem.h"
+#include "LinkedList.h"
 #include "snake.h"
 #include "map.h"
-#include "objects.h"
 #include "constants.h"
+#include "objects.h"
 
 
-void checkCollisions(int* isFoodEaten,int* isPlayerDead,S_MAP* Map,NODE* snake_head)
+
+void checkCollisions(int* isFoodEaten,int* isPlayerDead,S_MAP* Map,LinkedListNode* snakeHead)
 {
     /*Check head position against food*/
     int head_r, head_c;
 
     /*(in pompous tone) ISO C90 forbids mixed declarations and code*/
     #ifndef UNBEATABLE
-    NODE* nextNode;
+    LinkedListNode* nextNode;
     #endif
 
-    S_SNODE* snakeNode;
-    snakeNode = (S_SNODE*)(snake_head->data);
+    SnakeNode* snakeNode;
+    snakeNode = (SnakeNode*)(snakeHead->pData);
 
     head_r = snakeNode->row;
     head_c = snakeNode->col;
@@ -37,16 +38,16 @@ void checkCollisions(int* isFoodEaten,int* isPlayerDead,S_MAP* Map,NODE* snake_h
 
     
     #ifndef UNBEATABLE
-    nextNode = snake_head->next;
+    nextNode = snakeHead->pNext;
     while (nextNode != NULL)
     {
-        snakeNode = (S_SNODE*)(nextNode->data);
+        snakeNode = (SnakeNode*)(nextNode->pData);
         if(snakeNode->row == head_r && snakeNode->col == head_c)
         {
             *isPlayerDead = TRUE;
         }
 
-        nextNode = nextNode->next;
+        nextNode = nextNode->pNext;
     }
     #endif
     

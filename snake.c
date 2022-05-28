@@ -13,10 +13,10 @@ Takes in row,col and ch
 Returns a a snake node ptr.
 If an error occurs will return a NULL ptr
 */
-S_SNODE* initSnakeNodeWithCh(int row,int col, char ch)
+SnakeNode* initSnakeNodeWithCh(int row,int col, char ch)
 {
     E_DIRE dir;
-    S_SNODE* newSnakeNode;
+    SnakeNode* newSnakeNode;
 
     dir = getChToDirEnum(ch);
 
@@ -33,9 +33,9 @@ S_SNODE* initSnakeNodeWithCh(int row,int col, char ch)
     return newSnakeNode;
 }
 
-S_SNODE* initSnakeNodeWithDir(int row,int col, E_DIRE dir)
+SnakeNode* initSnakeNodeWithDir(int row,int col, E_DIRE dir)
 {
-    S_SNODE* newSnakeNode;
+    SnakeNode* newSnakeNode;
     newSnakeNode = initEmptySnakeNode();
     newSnakeNode->row = row;
     newSnakeNode->col = col;
@@ -43,9 +43,9 @@ S_SNODE* initSnakeNodeWithDir(int row,int col, E_DIRE dir)
     return newSnakeNode;
 }
 
-S_SNODE* initEmptySnakeNode()
+SnakeNode* initEmptySnakeNode()
 {
-    return (S_SNODE*)malloc(sizeof(S_SNODE));
+    return (SnakeNode*)malloc(sizeof(SnakeNode));
 }
 
 
@@ -75,18 +75,18 @@ E_DIRE getChToDirEnum(char ch)
 }
 
 
-void destroySNode(void* snode)
+void destroySnakeNode(void* snode)
 {
-    free((S_SNODE*)snode);
+    free((SnakeNode*)snode);
 }
 
 void getSNodeCoord(int* r, int* c,void* sn)
 {
-    *r = ((S_SNODE*)sn)->row;
-    *c = ((S_SNODE*)sn)->col;  
+    *r = ((SnakeNode*)sn)->row;
+    *c = ((SnakeNode*)sn)->col;  
 }
 
-void setSNodeCoordAndDir(int r, int c, E_DIRE d,S_SNODE* sn)
+void setSNodeCoordAndDir(int r, int c, E_DIRE d,SnakeNode* sn)
 {
     sn->row = r;
     sn->col = c;

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "stdio.h"
 
+#include "LinkedList.h"
 #include "mem.h"
 #include "snake.h"
 #include "map.h"
@@ -10,7 +11,7 @@
 
 /*  Moves snek with input char {w,a,s,d}, 
     input should already be checked to before */
-void move(char** arr_map,NODE** snake_head,char inp)
+void move(char** arr_map,LinkedList* snake,char inp)
 {  
     int move_r;
     int move_c;
@@ -18,10 +19,10 @@ void move(char** arr_map,NODE** snake_head,char inp)
 
 
     /*Clear Snek off map*/
-    clearSnake(arr_map,*snake_head);
+    clearSnake(arr_map,snake->pHead);
 
     /*Put Head of Snek coords in move_d,move_r & move_c*/
-    getSNodeCoord(&move_r,&move_c,(*snake_head)->data);
+    getSNodeCoord(&move_r,&move_c,(snake->pHead)->pData);
 
     /*Change coords to move*/
     switch(inp)
@@ -48,21 +49,21 @@ void move(char** arr_map,NODE** snake_head,char inp)
     }
 
     /*Check Validity and move snake*/
-    if(isValidMove(&move_r,&move_c,arr_map,*snake_head))
+    if(isValidMove(&move_r,&move_c,arr_map,&(snake->pHead)))
     {
         /*Now check if the calculated move coincides that of food*/
         if(isObj(arr_map,move_r,move_c,FOOD_SYM))
         {
             /*It does so push a new node onto the snake with move_d,r,c*/
             
-            pushNode(snake_head,initNodeWithDataWithDestroyFunc((void*)(initSnakeNodeWithDir(move_r,move_c,move_d)),destroySNode));
+            pushNode(snake->pHead,initNodeWithDataWithDestroyFunc((void*)(initSnakeNodeWithDir(move_r,move_c,move_d)),destroySnakeNode));
 
             /*Collision will be detected later*/
 
         }
         else
         {
-            moveSnake(move_r,move_c,move_d,*snake_head);
+            moveSnake(move_r,move_c,move_d,&(snake->pHead));
         }
     }
 
@@ -77,11 +78,11 @@ void move(char** arr_map,NODE** snake_head,char inp)
     Hence, moving the snek.
     The 2nd snode becomes the r,c,d of the head, then 3rd becomes the 2nd...etc
 */
-void moveSnake(int move_r,int move_c,E_DIRE move_d,NODE* snake_head)
+void moveSnake(int move_r,int move_c,E_DIRE move_d,LinkedListNode* snakeHead)
 {
-    NODE* nextNode;
-    S_SNODE* snode = (S_SNODE*)(snake_head->data);
-    nextNode = snake_head->next;
+    LinkedListNode* nextNode;
+    SnakeNode* snode = (SnakeNode*)(snakeHead->pData);
+    nextNode = snakeHead->pNext;
 
 
     if(nextNode != NULL)
@@ -89,7 +90,7 @@ void moveSnake(int move_r,int move_c,E_DIRE move_d,NODE* snake_head)
         moveSnake(snode->row,snode->col,snode->dir,nextNode);
     }
 
-    setSNodeCoordAndDir(move_r,move_c,move_d,(S_SNODE*)(snake_head->data));
+    setSNodeCoordAndDir(move_r,move_c,move_d,(SnakeNode*)(snakeHead->pData));
     
 }
 
@@ -97,7 +98,7 @@ void moveSnake(int move_r,int move_c,E_DIRE move_d,NODE* snake_head)
 
 
 /*Checks if a valid move returns TRUE if it is*/
-int isValidMove(int* move_r, int* move_c,char** arr_map,NODE* snake_head)
+int isValidMove(int* move_r, int* move_c,char** arr_map,LinkedList* snake)
 {
     /*Is not valid if:
         - Is a border move
@@ -110,7 +111,7 @@ int isValidMove(int* move_r, int* move_c,char** arr_map,NODE* snake_head)
     result = TRUE;
 
     /*Get Coords of BLOK_TWO into vars*/
-    getSNodeCoord(&BLOK_TWO_r,&BLOK_TWO_c,getNthItem(NTH_BLOKTWO,snake_head)->data);
+    getSNodeCoord(&BLOK_TWO_r,&BLOK_TWO_c,getNthItem(NTH_BLOKTWO,snake)->pData);
 
     if(isObj(arr_map,*move_r,*move_c,BORDER_SYM))
     {

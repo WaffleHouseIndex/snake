@@ -30,14 +30,12 @@ char** initEmptyMapArray(int m_rows, int m_cols);
 void updateMap(S_MAP* Map, int r, int c, char ch);
 
 void spawnBorder(S_MAP* s_map);
-void spawnSnake(int i,S_MAP* Map,NODE* n);
+void spawnSnake(S_MAP* Map,LinkedList* snake);
 void spawnFood(S_MAP* Map);
 
-void clearSnake(char** arr_map,NODE* snake_head);
+void clearSnake(char** arr_map,LinkedListNode* snakeHead);
 
 int isObj(char** map,int r,int c,char obj);
 int isValidMap(int m_row,int m_col);
 
-
-void printSNode(NODE* n);
 #endif

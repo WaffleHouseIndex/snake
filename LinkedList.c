@@ -1,5 +1,7 @@
 /*Generic Linked List Standard Implementation*/
 /*Source: https://curtin-ucp.gitbook.io/faq/06-structs */
+/**/
+
 
 #include <stdlib.h>
 #include <assert.h>
@@ -14,6 +16,35 @@ LinkedList* createLinkedList()
 
 	return pLinkedList;	
 }
+
+/*Added below code, based off of insertLast*/
+void insertStart(LinkedList* pList, void* pEntry)
+{
+	/* Create a new node */
+	LinkedListNode* pNode = (LinkedListNode*) malloc (sizeof(LinkedListNode));
+	pNode->pData = pEntry;
+	pNode->pNext = NULL;
+		
+	/* If linkedlist is empty */
+	if (pList->pHead == NULL)
+	{
+		assert(pList->pTail == NULL && pList->iSize == 0);		
+		pList->pHead = pNode;
+		pList->pTail = pNode;
+	}
+	else
+	{
+		assert(pList->pHead && pList->iSize > 0);
+
+		pNode->pNext = pList->pHead;
+
+		pList->pHead = pNode;
+	}
+	
+	(pList->iSize)++;
+}
+
+/*End addition*/
 
 void insertLast(LinkedList* pList, void* pEntry)
 {

@@ -1,14 +1,11 @@
 #ifndef H_GAME
 #define H_GAME
 
-#include "mem.h"
-#include "map.h"
-
 typedef struct
 {
     unsigned int amountOfFoodToWin;
     S_MAP* Map; 
-    NODE* snake_head;
+    LinkedList* snake;
 }S_GAME;
 
 typedef enum {STOPPED,RUNNING}S;

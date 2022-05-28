@@ -20,9 +20,10 @@ typedef struct LinkedList
 } LinkedList;
 
 LinkedList* createLinkedList();
-void insertLast(LinkedList* list, void* entry);
-void* removeLast(LinkedList* list);
-void printLinkedList(LinkedList* list, listFunc funcPtr);
-void freeLinkedList(LinkedList* list, listFunc funcPtr);
+void insertLast(LinkedList* pList, void* pEntry);
+void insertStart(LinkedList* pList, void* pEntry);
+void* removeLast(LinkedList* pList);
+void printLinkedList(LinkedList* pList, listFunc funcPtr);
+void freeLinkedList(LinkedList* pList, listFunc funcPtr);
 
 #endif

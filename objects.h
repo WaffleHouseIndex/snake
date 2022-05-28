@@ -1,6 +1,6 @@
 #ifndef H_OBJECTS
 #define H_OBJECTS
 
-void checkCollisions(int* foodEaten,int* isPlayerDead,S_MAP* Map,NODE* snake_head);
+void checkCollisions(int* isFoodEaten,int* isPlayerDead,S_MAP* Map,LinkedListNode* snakeHead);
 
 #endif

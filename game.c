@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "mem.h"
+#include "LinkedList.h"
 #include "snake.h"
 #include "map.h"
 #include "game.h"
@@ -30,11 +31,11 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
     int r,c;
     S_MAP* map;
 
-    NODE* snake_head;
+    LinkedList* snake;
 
     map = NULL;
     game = NULL; 
-    snake_head = NULL;
+    snake = NULL;
 
     /*Start Random*/
     initRandom();
@@ -53,7 +54,7 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
         parseMapSize(fptr,&r,&c);
         if(r == INT_ERROR || c == INT_ERROR)
         {
-            printf("Failed to initialise game!\n");
+            printf("Invalid row and column type!\n");
         }
         else
         {
@@ -65,22 +66,24 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
             }
             else
             {
-                parseSnake(fptr,&snake_head);
+                /*Just before parsing snake create the LinkedList struct*/
+                snake = createLinkedList();
+                
+                /*If parseSnake has any problems will free snake*/
+                parseSnake(fptr,&snake);
 
-                if(snake_head!=NULL)
+                if(snake!=NULL)
                 {
-                    /*Create game struct as everything good to go*/
+                    /*Create game struct as everything is good to go*/
                     game = createEmptyGameStruct();
                     game->amountOfFoodToWin = amountOfFoodToWin;
                     game->Map = map;
-                    game->snake_head = snake_head;
+                    game->snake = snake;
 
                 }
                 else
                 {
                     destroyMap(map);
-
-
                     printf("Invalid snake.\n");
                 }
 
@@ -123,7 +126,7 @@ void runGame(S_GAME* game)
     amountOfFoodEaten = ZERO;
 
     /*Initial Spawning, order is crucial as spawnFood needs the snake on map*/
-    spawnSnake(I_HEAD,game->Map,game->snake_head);
+    spawnSnake(game->Map,game->snake);
     spawnFood(game->Map);
 
     /*Output Initial game status*/
@@ -137,13 +140,13 @@ void runGame(S_GAME* game)
         if(isValid(inp))
         {
             /*Move Snek*/
-            move(game->Map->arr_map,&(game->snake_head),inp);
+            move(game->Map->arr_map,&(game->snake->pHead),inp);
 
             /*Check for collision with body and food*/
-            checkCollisions(&isFoodEaten,&isPlayerDead,game->Map,game->snake_head);
+            checkCollisions(&isFoodEaten,&isPlayerDead,game->Map,game->snake->pHead);
 
             /*Place Snek back on map*/
-            spawnSnake(I_HEAD,game->Map,game->snake_head);
+            spawnSnake(game->Map,game->snake);
 
             if(isFoodEaten)
             {
@@ -197,7 +200,7 @@ S_GAME* createEmptyGameStruct()
 void destroyGame(S_GAME* game)
 {
     destroyMap(game->Map);
-    destroyLinkedList(game->snake_head);
+    freeLinkedList(game->snake,destroySnakeNode);
 
     free(game);
 }

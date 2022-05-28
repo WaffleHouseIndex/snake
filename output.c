@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "mem.h"
-#include "snake.h"
 #include "map.h"
 #include "output.h"
 
@@ -23,11 +21,4 @@ void out_Map(S_MAP* Map)
         printf("\n");
     }
 
-}
-
-
-void printSnakeNode(NODE* n)
-{
-    S_SNODE* sn = (S_SNODE*)(n->data);
-    printf("Snake Piece @ %d %d\n",sn->row,sn->col);
 }

@@ -4,11 +4,10 @@
 #include <stdio.h>
 
 #include "constants.h"
-#include "mem.h"
+#include "LinkedList.h"
 #include "snake.h"
 #include "map.h"
 #include "random.h"
-#include "output.h"
 
 /*
 Handles the map 
@@ -83,18 +82,19 @@ char** initEmptyMapArray(int m_rows, int m_cols)
 
 
 
-/*Removes snek from map arrays*/
-void clearSnake(char** arr_map,NODE* snake_head)
+/*Removes snake from map arrays*/
+void clearSnake(char** arr_map,LinkedListNode* snakeHead)
 {
-    NODE* n;
-    S_SNODE* snakeNode;
-    n = snake_head;
+    LinkedListNode* n;
+    SnakeNode* snakeNode;
+    n = snakeHead;
+
     while(n != NULL)
     {
-        snakeNode = (S_SNODE*)(n->data);
+        snakeNode = (SnakeNode*)(n->pData);
         arr_map[snakeNode->row][snakeNode->col] = EMPTY_SYM;
         
-        n=n->next;
+        n=n->pNext;
     }
     
 }
@@ -102,27 +102,33 @@ void clearSnake(char** arr_map,NODE* snake_head)
 
 
 /*Goes through linked list and spawns the snake, assumed valid snake positioning*/
-void spawnSnake(int i,S_MAP* Map,NODE* n)
+void spawnSnake(S_MAP* Map,LinkedList* snake)
 {
-    S_SNODE* snode;
-    snode = (S_SNODE*)(n->data);
+    LinkedListNode* node;
+    SnakeNode* sNode;
+    node = (LinkedListNode*)(snake->pHead);
 
     /*Logic for whether the node is a head,body or tail*/
-    if(i==I_HEAD)
+    while(node)
     {
-        spawnSnake(++i,Map,n->next);
-        updateMap(Map,snode->row,snode->col,SNAKE_H[snode->dir]);
-    }
-    else if(n->next!=NULL)
-    {
-        spawnSnake(++i,Map,n->next);
-        updateMap(Map,snode->row,snode->col,SNAKE_B[snode->dir]);
-    }
-    else
-    {
-        updateMap(Map,snode->row,snode->col,SNAKE_T[snode->dir]);
-    }
+        sNode = (SnakeNode*)(node->pData);
 
+        if(node == snake->pHead)
+        {
+            updateMap(Map,sNode->row,sNode->col,SNAKE_H[sNode->dir]);
+        }
+        else if(node == snake->pTail)
+        {
+            updateMap(Map,sNode->row,sNode->col,SNAKE_T[sNode->dir]);
+        }
+        else
+        {
+            updateMap(Map,sNode->row,sNode->col,SNAKE_B[sNode->dir]);
+        }
+
+        node = node->pNext;
+    }
+    
 }
 
 void updateMap(S_MAP* Map, int r, int c, char ch)
@@ -239,10 +245,4 @@ void destroyMap(S_MAP* map)
     free(map);
 }
 
-
-void printSNode(NODE* n)
-{
-    S_SNODE* sn = (S_SNODE*)(n->data);
-    printf("SNODE: r - %d, c - %d, d - %d\n",sn->row,sn->col,sn->dir);
-}
 

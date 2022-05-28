@@ -3,6 +3,5 @@
 
 
 void out_Map(S_MAP* Map);
-void printSnakeNode(NODE* n);
 
 #endif
