@@ -36,8 +36,10 @@ void insertStart(LinkedList* pList, void* pEntry)
 	{
 		assert(pList->pHead && pList->iSize > 0);
 
+		/*Point new node at head*/
 		pNode->pNext = pList->pHead;
 
+		/*Point linked list pHead at new node*/
 		pList->pHead = pNode;
 	}
 	

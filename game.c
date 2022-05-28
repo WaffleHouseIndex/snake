@@ -1,9 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
-#include "mem.h"
 #include "LinkedList.h"
+#include "mem.h"
 #include "snake.h"
 #include "map.h"
 #include "game.h"
@@ -71,14 +72,24 @@ S_GAME* initGame(char* filename, int amountOfFoodToWin)
                 
                 /*If parseSnake has any problems will free snake*/
                 parseSnake(fptr,&snake);
-
+                
                 if(snake!=NULL)
                 {
-                    /*Create game struct as everything is good to go*/
-                    game = createEmptyGameStruct();
-                    game->amountOfFoodToWin = amountOfFoodToWin;
-                    game->Map = map;
-                    game->snake = snake;
+                    /*Lastly check snake size if over 3*/
+                    if(snake->iSize>=MIN_LEN_SNEK)
+                    {
+                        /*Create game struct as everything is good to go*/
+                        game = createEmptyGameStruct();
+                        game->amountOfFoodToWin = amountOfFoodToWin;
+                        game->Map = map;
+                        game->snake = snake;
+                    }
+                    else
+                    {
+                        freeLinkedList(snake,&destroySnakeNode);
+                        destroyMap(map);
+                        printf("Invalid <len_snake>. Should be >= %d\n",MIN_LEN_SNEK);
+                    }
 
                 }
                 else
@@ -119,6 +130,7 @@ void runGame(S_GAME* game)
     int isFoodEaten;
     int amountOfFoodEaten;
     int isPlayerDead;
+    int isMoved;
     
     status = RUNNING;
     isFoodEaten = FALSE;
@@ -136,15 +148,24 @@ void runGame(S_GAME* game)
     /*Game Loop*/
     while(status==RUNNING)
     {
-        char inp = getInput();
+        char inp;
+        inp = getInput();
         if(isValid(inp))
         {
-            /*Move Snek*/
-            move(game->Map->arr_map,&(game->snake->pHead),inp);
+            /*Clear Snek off map*/
+            clearSnake(game->Map->arr_map,game->snake->pHead);
 
-            /*Check for collision with body and food*/
-            checkCollisions(&isFoodEaten,&isPlayerDead,game->Map,game->snake->pHead);
 
+            /*Move snEk*/
+            isMoved = move(game->Map->arr_map,game->snake,inp);
+            
+
+            if(isMoved)
+            {
+                /*Check for collision with body and food*/
+                checkCollisions(&isFoodEaten,&isPlayerDead,game->Map,game->snake->pHead);
+            }
+            
             /*Place Snek back on map*/
             spawnSnake(game->Map,game->snake);
 
@@ -165,7 +186,16 @@ void runGame(S_GAME* game)
             }
             
             out_Map(game->Map);
-            printf("Food Eaten: %d / %d\n",amountOfFoodEaten,game->amountOfFoodToWin);
+
+            if(isMoved)
+            {
+                printf("Food Eaten: %d / %d\n",amountOfFoodEaten,game->amountOfFoodToWin);
+            }
+            else
+            {
+                printf("Invalid move.\n");
+            }
+
         }
         else
         {

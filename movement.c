@@ -10,16 +10,17 @@
 #include "movement.h"
 
 /*  Moves snek with input char {w,a,s,d}, 
-    input should already be checked to before */
-void move(char** arr_map,LinkedList* snake,char inp)
-{  
+    input should already be checked to before 
+    Returns TRUE if snake is moved return FALSE otherwise
+    */
+int move(char** arr_map,LinkedList* snake,char inp)
+{ 
+    int isMoved; 
     int move_r;
     int move_c;
     E_DIRE move_d;
 
-
-    /*Clear Snek off map*/
-    clearSnake(arr_map,snake->pHead);
+    isMoved = FALSE;
 
     /*Put Head of Snek coords in move_d,move_r & move_c*/
     getSNodeCoord(&move_r,&move_c,(snake->pHead)->pData);
@@ -49,27 +50,30 @@ void move(char** arr_map,LinkedList* snake,char inp)
     }
 
     /*Check Validity and move snake*/
-    if(isValidMove(&move_r,&move_c,arr_map,&(snake->pHead)))
+    if(isValidMove(&move_r,&move_c,arr_map,snake))
     {
         /*Now check if the calculated move coincides that of food*/
         if(isObj(arr_map,move_r,move_c,FOOD_SYM))
         {
             /*It does so push a new node onto the snake with move_d,r,c*/
             
-            pushNode(snake->pHead,initNodeWithDataWithDestroyFunc((void*)(initSnakeNodeWithDir(move_r,move_c,move_d)),destroySnakeNode));
+            insertStart(snake,(void*)(initSnakeNodeWithDir(move_r,move_c,move_d)));
 
             /*Collision will be detected later*/
 
         }
         else
         {
-            moveSnake(move_r,move_c,move_d,&(snake->pHead));
+            moveSnake(move_r,move_c,move_d,snake->pHead);   
         }
+
+        isMoved = TRUE;
     }
+    
 
     
     
-    
+    return isMoved;
     
 }
 
@@ -121,6 +125,7 @@ int isValidMove(int* move_r, int* move_c,char** arr_map,LinkedList* snake)
     {
         result = FALSE;
     }
+    
 
     return result;
 }

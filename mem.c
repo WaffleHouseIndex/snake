@@ -17,12 +17,11 @@ LinkedListNode* getNthItem(int n, LinkedList* snake)
     LinkedListNode* node;
 
     /*Start at first element*/
-    i=0;
     node = snake->pHead;
 
     /*Walk down list stop once at the nth element*/
-    /*If you reach null first end loop and node = NULL*/
-    for (i = 0; i < n; i++)
+    /*If you reach null first end loop and return NULL*/
+    for (i = 1; i < n; i++)
     {
         if(node->pNext == NULL)
         {
@@ -34,8 +33,8 @@ LinkedListNode* getNthItem(int n, LinkedList* snake)
             node = node->pNext;
         }
     }
-    return node;
     
+    return node;
 }
 
 

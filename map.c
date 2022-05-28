@@ -5,6 +5,7 @@
 
 #include "constants.h"
 #include "LinkedList.h"
+#include "mem.h"
 #include "snake.h"
 #include "map.h"
 #include "random.h"
@@ -104,32 +105,39 @@ void clearSnake(char** arr_map,LinkedListNode* snakeHead)
 /*Goes through linked list and spawns the snake, assumed valid snake positioning*/
 void spawnSnake(S_MAP* Map,LinkedList* snake)
 {
-    LinkedListNode* node;
-    SnakeNode* sNode;
-    node = (LinkedListNode*)(snake->pHead);
-
-    /*Logic for whether the node is a head,body or tail*/
-    while(node)
-    {
-        sNode = (SnakeNode*)(node->pData);
-
-        if(node == snake->pHead)
-        {
-            updateMap(Map,sNode->row,sNode->col,SNAKE_H[sNode->dir]);
-        }
-        else if(node == snake->pTail)
-        {
-            updateMap(Map,sNode->row,sNode->col,SNAKE_T[sNode->dir]);
-        }
-        else
-        {
-            updateMap(Map,sNode->row,sNode->col,SNAKE_B[sNode->dir]);
-        }
-
-        node = node->pNext;
-    }
+    spawnSnakeFromNode(Map,snake,snake->pHead);
     
 }
+
+/*Look i know it isn't pretty but it means the snake renders from tail to head*/
+/*
+    # - ^ -              # - - -
+        | -   instead of     - |  [ Dead ;( ]
+*/
+void spawnSnakeFromNode(S_MAP* Map,LinkedList* snake,LinkedListNode* n)
+{
+    SnakeNode* sNode;
+    sNode = (SnakeNode*)(n->pData);
+
+    /*Snake head and tail encoded in pointers indirectly*/
+    /*Depending if it is a head,body or tail piece use different char arrays*/
+    if(n == snake->pHead)
+    {
+        spawnSnakeFromNode(Map,snake,n->pNext);
+        updateMap(Map,sNode->row,sNode->col,SNAKE_H[sNode->dir]);
+    }
+    else if(n == snake->pTail)
+    {
+        updateMap(Map,sNode->row,sNode->col,SNAKE_T[sNode->dir]);
+    }
+    else
+    {
+        spawnSnakeFromNode(Map,snake,n->pNext);
+        updateMap(Map,sNode->row,sNode->col,SNAKE_B[sNode->dir]);
+    }
+
+}
+
 
 void updateMap(S_MAP* Map, int r, int c, char ch)
 {
@@ -206,25 +214,24 @@ int isObj(char** arr_map,int r,int c,char obj)
     return result;
 }
 
+
 int isValidMap(int m_row,int m_col)
 {
-    int isValid = FALSE;
+    int isValid;
+    isValid = TRUE;
 
-    if(m_row>=MIN_ROW_MAP)
+    if(m_row < MIN_ROW_MAP)
     {
-        if(m_col>=MIN_COL_MAP)
-        {
-            isValid = TRUE;
-        }
-        else
-        {
-            printf("Invalid <col_map> value. Should be >= %d.\n",MIN_COL_MAP);
-        }
-    }
-    else
-    {
+        isValid = FALSE;
         printf("Invalid <row_map> value. Should be >= %d.\n",MIN_ROW_MAP);
     }
+    
+    if(m_col < MIN_COL_MAP)
+    {
+        isValid = FALSE;
+        printf("Invalid <col_map> value. Should be >= %d.\n",MIN_COL_MAP);
+    }
+    
     
     return isValid;
 }

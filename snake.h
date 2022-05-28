@@ -21,9 +21,12 @@ typedef struct
 }SnakeNode;
 
 
+SnakeNode* initEmptySnakeNode();
 SnakeNode* initSnakeNodeWithCh(int row,int col, char ch);
 SnakeNode* initSnakeNodeWithDir(int row,int col, E_DIRE dir);
-SnakeNode* initEmptySnakeNode();
+
+
+
 E_DIRE getChToDirEnum(char ch);
 void getSNodeCoord(int* r, int* c,void* sn);
 void setSNodeCoordAndDir(int r, int c, E_DIRE d,SnakeNode* sn);

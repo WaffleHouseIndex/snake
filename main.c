@@ -1,10 +1,14 @@
-#include "main.h"
-#include "game.h"
-#include "constants.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+
+#include "LinkedList.h"
+#include "map.h"
+#include "game.h"
+#include "constants.h"
+#include "main.h"
+
 
 int main(int argc, char* argv[])
 {
@@ -13,10 +17,10 @@ int main(int argc, char* argv[])
         Start of Snek game
 
         1. Parse cmdline args 
-           - Format argv = [snek,filename,<col_map>,<len_snek>]  
+           - Format argv = [snake,filename,<food amount to win>]  
         2. Validate cmdline args
-           - must have 4 args snek,<row_map>,<col_map>,<len_snek>
-           - row_map, col_map, len_snek must be over 0 
+           - must have 3 args 
+           - row_map, col_map, len_snek must be over constant value [constants.h] 
            - len_snek must be at most [(row_map)*(col_map)] - 1
         3. If valid start game with parameters else end program
     */
@@ -24,7 +28,7 @@ int main(int argc, char* argv[])
     int amountOfFoodToWin; 
     char* filename;
     S_GAME* snakeGame;
-   
+
     if (argc != ARG_COUNT) 
     {
         printf("Usage: ./snake <filename> <food_amount_to_win>\n");

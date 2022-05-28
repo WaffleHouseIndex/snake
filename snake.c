@@ -1,5 +1,7 @@
 
 #include <stdlib.h>
+#include <stdio.h>
+
 #include "snake.h"
 
 
@@ -92,4 +94,3 @@ void setSNodeCoordAndDir(int r, int c, E_DIRE d,SnakeNode* sn)
     sn->col = c;
     sn->dir = d;
 }
-

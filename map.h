@@ -31,6 +31,7 @@ void updateMap(S_MAP* Map, int r, int c, char ch);
 
 void spawnBorder(S_MAP* s_map);
 void spawnSnake(S_MAP* Map,LinkedList* snake);
+void spawnSnakeFromNode(S_MAP* Map,LinkedList* snake,LinkedListNode* n);
 void spawnFood(S_MAP* Map);
 
 void clearSnake(char** arr_map,LinkedListNode* snakeHead);

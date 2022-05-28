@@ -15,13 +15,13 @@ endif
 $(EXEC) : $(OBJ)
 	$(CC) $(OBJ) -o $(EXEC)
 
-main.o : main.c main.h game.h constants.h
+main.o : main.c main.h LinkedList.h map.h game.h constants.h
 	$(CC) $(CFLAGS) -c main.c
 
 game.o : game.c game.h mem.h LinkedList.h snake.h map.h constants.h snakeio.h random.h output.h input.h movement.h objects.h
 	$(CC) $(CFLAGS) -c game.c
 
-map.o : map.c map.h constants.h LinkedList.h snake.h random.h
+map.o : map.c map.h constants.h LinkedList.h mem.h snake.h random.h
 	$(CC) $(CFLAGS) -c map.c
 
 mem.o : mem.c mem.h LinkedList.h
@@ -30,7 +30,7 @@ mem.o : mem.c mem.h LinkedList.h
 input.o : input.c input.h terminal.h constants.h 
 	$(CC) $(CFLAGS) -c input.c
 
-output.o : output.c output.h map.h
+output.o : output.c output.h LinkedList.h map.h
 	$(CC) $(CFLAGS) -c output.c
 
 snake.o : snake.c snake.h

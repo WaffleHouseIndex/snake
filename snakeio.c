@@ -92,6 +92,7 @@ void parseSnake(FILE* fptr,LinkedList** ptr_snake)
             /*Check for problems*/
             if(newSnakeNode != NULL)
             {
+
                 /*Now insert at the start of linked list*/
                 insertStart(*ptr_snake,(void*)newSnakeNode);
             }
@@ -101,20 +102,24 @@ void parseSnake(FILE* fptr,LinkedList** ptr_snake)
                 nRead = EOF;
 
                 /*Destroy snake*/
-                freeLinkedList(*ptr_snake,destroySnakeNode);
-
+                freeLinkedList(*ptr_snake,&destroySnakeNode);
                 *ptr_snake = NULL; 
                 
             }
             
         }
-        else
+        else if(nRead != EOF)
         {
+            freeLinkedList(*ptr_snake,&destroySnakeNode);
             *ptr_snake = NULL;
             nRead = EOF;
         }
+        
 
     }while(nRead!=EOF);
+
+
+    
 }
 
 
